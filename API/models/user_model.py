@@ -28,7 +28,7 @@ class UserModel(Base):
         self.password_hash = bcrypt_context.hash(plain_password)
 
     def validate_password(self, plain_password: str) -> bool:
-        return bcrypt_context.verify(self.password_hash, plain_password)
+        return bcrypt_context.verify(plain_password, self.password_hash)
 
     def __init__(self, username,
                  email,
