@@ -4,13 +4,14 @@ from fastapi import APIRouter, Depends, HTTPException, Path
 from ..data import get_database
 from sqlalchemy.orm import Session
 from starlette import status
-
+from ..auth import get_current_token
 from ..models import UserModel
-from ..requests import UserRequest, PasswordRequest
+from ..requests_models import UserRequest, PasswordRequest
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 database = Annotated[Session, Depends(get_database)]
+user_dependency = Annotated[dict, Depends(get_current_token)]
 
 @router.post("", status_code=status.HTTP_204_NO_CONTENT)
 async def new_user(db: database, user_request : UserRequest):
@@ -28,16 +29,21 @@ async def new_user(db: database, user_request : UserRequest):
 async def get_all_users(db : database):
     return db.query(UserModel).all()
 
+## ADMIN
 @router.get("/{user_id}", status_code=status.HTTP_200_OK)
-async def get_user_by_id(db : database, user_id : int = Path(gt=0)):
+async def get_user_by_id(db : database, user : user_dependency ,user_id : int = Path(gt=0)):
+    if user is None or user_id != user.get("id"):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_model : UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).first()
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user_model
 
-@router.put("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_user(db:database, user_request : UserRequest,user_id : int = Path(gt=0)):
-    user_model : UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).first()
+@router.put("", status_code=status.HTTP_204_NO_CONTENT)
+async def update_user(db:database,user : user_dependency ,user_request : UserRequest):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    user_model : UserModel = db.query(UserModel).filter(UserModel.user_id == user.get("id")).first()
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     user_model.updated_at = datetime.now(timezone.utc)
@@ -48,8 +54,11 @@ async def update_user(db:database, user_request : UserRequest,user_id : int = Pa
     db.add(user_model)
     db.commit()
 
-@router.put("/password/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_user_password(db:database, password_request : PasswordRequest ,user_id : int = Path(gt=0)):
+@router.put("/password", status_code=status.HTTP_204_NO_CONTENT)
+async def update_user_password(db:database,user : user_dependency ,password_request : PasswordRequest):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    user_id : int= user.get("user")
     user_model : UserModel | None = db.query(UserModel).filter(UserModel.user_id == user_id).first()
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
@@ -61,8 +70,11 @@ async def update_user_password(db:database, password_request : PasswordRequest ,
     db.commit()
 
 
-@router.put("/suspend/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def suspend_user(db : database, user_id: int = Path(gt=0)):
+@router.put("/suspend", status_code=status.HTTP_204_NO_CONTENT)
+async def suspend_user(db : database, user : user_dependency):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    user_id : int = user.get("id")
     user_model : UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).first()
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
