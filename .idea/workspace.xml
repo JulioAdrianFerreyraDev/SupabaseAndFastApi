@@ -4,21 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/API/auth/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/API/auth/auth_functions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/API/reponse_models/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/API/reponse_models/jwt_response.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/API/routes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/requests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/requests/password_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/password_request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/requests/user_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/user_request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/users.py" afterDir="false" />
-    </list>
+    <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
