@@ -56,6 +56,7 @@ async def update_user_password(db:database, password_request : PasswordRequest ,
     if not user_model.validate_password(password_request.password):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Cannot validate Password")
     user_model.password = password_request.new_password
+    user_model.updated_at = datetime.now(timezone.utc)
     db.add(user_model)
     db.commit()
 
