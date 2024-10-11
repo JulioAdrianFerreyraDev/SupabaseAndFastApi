@@ -16,20 +16,6 @@ database = Annotated[Session, Depends(get_database)]
 user_dependency = Annotated[dict, Depends(get_current_token)]
 
 
-## CREATE
-@router.post("", status_code=status.HTTP_204_NO_CONTENT)
-async def new_user(db: database, user_request: UserRequest):
-    user_model: UserModel = UserModel(
-        username=user_request.username,
-        password=user_request.password,
-        email=user_request.email,
-        last_name=user_request.last_name,
-        first_name=user_request.first_name
-    )
-    db.add(user_model)
-    db.commit()
-
-
 ## READ
 @router.get("", status_code=status.HTTP_200_OK, description="Admin Only")
 async def get_all_users(db: database):
