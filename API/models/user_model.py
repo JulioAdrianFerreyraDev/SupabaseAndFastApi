@@ -22,6 +22,7 @@ class UserModel(Base):
     updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     is_active = Column(Boolean, default=True)
     sales = relationship("SaleModel", back_populates="user", cascade="all, delete-orphan")
+    products = relationship("ProductModel", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def password(self):

@@ -2,6 +2,7 @@ from fastapi import APIRouter, status, Depends, HTTPException, Path, Query
 from starlette.status import HTTP_204_NO_CONTENT
 
 from ..models import ProductModel
+from ..reponse_models import ProductResponse
 
 router = APIRouter(prefix="/products", tags=["Products"])
 from typing import Annotated, Optional
@@ -31,7 +32,7 @@ async def add_new_product(db: database, user: user_dependency, product_request: 
     db.commit()
 
 
-@router.get(path="", status_code=status.HTTP_200_OK)
+@router.get(path="", status_code=status.HTTP_200_OK, response_model=list[ProductResponse])
 async def get_all_products(db: database, user: user_dependency):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
@@ -40,7 +41,7 @@ async def get_all_products(db: database, user: user_dependency):
     return products
 
 
-@router.get(path="/{product_id}", status_code=status.HTTP_200_OK)
+@router.get(path="/{product_id}", status_code=status.HTTP_200_OK, response_model=ProductResponse)
 async def get_product(db: database, user: user_dependency, product_id: int = Path(gt=0)):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
