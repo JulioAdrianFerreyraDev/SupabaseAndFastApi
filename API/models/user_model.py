@@ -1,7 +1,10 @@
-from ..data import Base
-from sqlalchemy import Column, String, Boolean, BIGINT, DateTime
 from datetime import datetime, timezone
+
 from passlib.context import CryptContext
+from sqlalchemy import Column, String, Boolean, BIGINT, DateTime
+from sqlalchemy.orm import relationship
+
+from ..data import Base
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -16,8 +19,9 @@ class UserModel(Base):
     last_name = Column(String, nullable=False)
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
     is_active = Column(Boolean, default=True)
+    sales = relationship("SaleModel", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def password(self):
@@ -35,12 +39,11 @@ class UserModel(Base):
                  first_name,
                  last_name,
                  password):
-        self.username = username,
-        self.email = email,
-        self.first_name = first_name,
-        self.last_name = last_name,
+        self.username = username
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
         self.password = password
-        self.is_active = False
+        self.is_active = True
         self.created_at = datetime.now(timezone.utc)
         self.updated_at = datetime.now(timezone.utc)
-
