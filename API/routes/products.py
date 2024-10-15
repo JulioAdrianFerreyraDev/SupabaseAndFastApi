@@ -1,5 +1,4 @@
-from fastapi import APIRouter, status, Depends, HTTPException, Path, Query
-from starlette.status import HTTP_204_NO_CONTENT
+from fastapi import APIRouter, status, Depends, HTTPException, Path, Query, File, UploadFile, Form
 
 from ..models import ProductModel
 from ..reponse_models import ProductResponse
@@ -7,7 +6,7 @@ from ..reponse_models import ProductResponse
 router = APIRouter(prefix="/products", tags=["Products"])
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
-from ..data import get_database
+from ..data import get_database, upload_file
 from ..auth import get_current_token
 from ..requests_models import ProductRequest
 
@@ -15,8 +14,15 @@ database = Annotated[Session, Depends(get_database)]
 user_dependency = Annotated[dict, Depends(get_current_token)]
 
 
+def get_product_info(description: Optional[str] = Form(default=""), price: float = Form(), stock: int = Form(),
+                     name: str = Form()):
+    return ProductRequest(product_id=None, description=description, price=price, stock=stock, name=name)
+
+
 @router.post(path="", status_code=status.HTTP_204_NO_CONTENT)
-async def add_new_product(db: database, user: user_dependency, product_request: ProductRequest):
+async def add_new_product(db: database, user: user_dependency,
+                          product_request: ProductRequest = Depends(get_product_info),
+                          image: UploadFile = File()):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_id: int = user.get("id")
@@ -25,8 +31,9 @@ async def add_new_product(db: database, user: user_dependency, product_request: 
         description=product_request.description,
         price=product_request.price,
         stock=product_request.stock,
-        image_url=product_request.image_url,
-        user_id=user_id
+        user_id=user_id,
+        image_url=await upload_file(username=user.get("username"), file=image)
+
     )
     db.add(product_model)
     db.commit()
@@ -64,6 +71,7 @@ async def get_products_by_category(db: database, user: user_dependency, category
 
 @router.put(path="/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_product(db: database, user: user_dependency, product_request: ProductRequest,
+                         image: UploadFile = File(),
                          product_id: int = Path(gt=0)):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
@@ -76,12 +84,12 @@ async def update_product(db: database, user: user_dependency, product_request: P
     product_model.stock = product_request.stock
     product_model.price = product_request.price
     product_model.description = product_request.description
-    product_model.image_url = product_request.image_url
+    product_model.image_url = "https://uppkqkteqxmhxkbuvani.supabase.co/storage/v1/object/sign/file_storage/new-product-presentation.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJmaWxlX3N0b3JhZ2UvbmV3LXByb2R1Y3QtcHJlc2VudGF0aW9uLnBuZyIsImlhdCI6MTcyOTAxMzQ4OSwiZXhwIjoxNzYwNTQ5NDg5fQ.vu1TuZUWJgUg2MzGBwiM3bc2y2-aBmeS9y5ZkUjPH_4&t=2024-10-15T17%3A31%3A31.463Z"
     db.add(product_model)
     db.commit()
 
 
-@router.delete("/{product_id}", status_code=HTTP_204_NO_CONTENT)
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(db: database, user: user_dependency, product_id: int = Path(gt=0)):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
