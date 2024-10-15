@@ -1,5 +1,8 @@
+from sqlalchemy import Column, BIGINT, Integer, ForeignKey
+from sqlalchemy.orm import relationship
+
 from ..data import Base
-from sqlalchemy import Column, BIGINT,Integer, ForeignKey
+
 
 class SaleProductModel(Base):
     __tablename__ = "sales_products"
@@ -8,3 +11,5 @@ class SaleProductModel(Base):
     quantity = Column(Integer)
     product_id = Column(BIGINT, ForeignKey("products.product_id"))
     sale_id = Column(BIGINT, ForeignKey("sales.sale_id"))
+    products = relationship("ProductModel", back_populates="sold_products")
+    sales = relationship("SaleModel", back_populates="sold_products")

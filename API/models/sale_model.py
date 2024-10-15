@@ -14,3 +14,4 @@ class SaleModel(Base):
     sale_date = Column(DateTime, default=datetime.now(timezone.utc))
     user_id = Column(BIGINT, ForeignKey("users.user_id"))
     user = relationship("UserModel", back_populates="sales")
+    sold_products = relationship("SaleProductModel", back_populates="sales", cascade="all, delete-orphan")
