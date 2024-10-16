@@ -8,7 +8,7 @@ load_dotenv()
 
 __SUPABASE_URL = getenv("SUPABASE_URL")
 __SUPABASE_API_TOKEN = getenv("SUPABASE_API_TOKEN")
-
+__storage_name: str = "file_storage"
 supabase_client: Client = create_client(supabase_url=__SUPABASE_URL,
                                         supabase_key=__SUPABASE_API_TOKEN)
 
@@ -29,11 +29,38 @@ async def upload_file(file: UploadFile, username: str) -> str:
         bucket_in_path = f"{username}/products/resources/{file.filename}"
         # Open the file and upload it to supabase storage
 
-        supabase_client.storage.from_("file_storage").upload(file=file_content,
+        supabase_client.storage.from_(__storage_name).upload(file=file_content,
                                                              path=bucket_in_path,
                                                              file_options={"content-type": "image/*"})
         # Get the public URL after uploading
-        public_url: str = supabase_client.storage.from_("file_storage").get_public_url(bucket_in_path)
+        public_url: str = supabase_client.storage.from_(__storage_name).get_public_url(bucket_in_path)
         return public_url.replace("?", "")
     except Exception:
-        return "https://uppkqkteqxmhxkbuvani.supabase.co/storage/v1/object/sign/file_storage/new-product-presentation.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJmaWxlX3N0b3JhZ2UvbmV3LXByb2R1Y3QtcHJlc2VudGF0aW9uLnBuZyIsImlhdCI6MTcyOTAxMzQ4OSwiZXhwIjoxNzYwNTQ5NDg5fQ.vu1TuZUWJgUg2MzGBwiM3bc2y2-aBmeS9y5ZkUjPH_4&t=2024-10-15T17%3A31%3A31.463Z"
+        return "https://dzmpeskjgukecrebnptg.supabase.co/storage/v1/object/public/file_storage/default_images/new-product-presentation.png"
+
+
+async def update_file(new_file: UploadFile, old_file_name: str, username: str) -> str:
+    """
+    :param new_file: The new file to upload
+    :param old_file_name: The old file name inside the bucket
+    :param username: Will be used to indicate the root directory inside the bucket
+    :return:
+    """
+
+    try:
+        file_content = await new_file.read()
+        bucket_in_path = f"{username}/products/resources/{old_file_name}"
+        supabase_client.storage.from_(__storage_name).update(file=file_content, path=bucket_in_path,
+                                                             file_options={"content-type": "image/*"})
+        public_url: str = supabase_client.storage.from_(__storage_name).get_public_url(bucket_in_path)
+        return public_url.replace("?", "")
+    except Exception:
+        return ""
+
+
+def delete_file(file_name: str, username: str):
+    try:
+        bucket_in_path = f"{username}/products/resources/{file_name}"
+        response = supabase_client.storage.from_(__storage_name).remove(bucket_in_path)
+    except Exception:
+        print("Exception")

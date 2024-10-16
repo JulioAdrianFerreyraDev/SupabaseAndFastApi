@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends, HTTPException, Path, Query, File, UploadFile, Form
+from fastapi import APIRouter, status, Depends, HTTPException, Path, Query, File, UploadFile
 
 from ..models import ProductModel
 from ..reponse_models import ProductResponse
@@ -6,22 +6,29 @@ from ..reponse_models import ProductResponse
 router = APIRouter(prefix="/products", tags=["Products"])
 from typing import Annotated, Optional
 from sqlalchemy.orm import Session
-from ..data import get_database, upload_file
+from ..data import get_database, upload_file, update_file, delete_file
 from ..auth import get_current_token
-from ..requests_models import ProductRequest
+from ..requests_models import ProductRequest, product_form
 
 database = Annotated[Session, Depends(get_database)]
 user_dependency = Annotated[dict, Depends(get_current_token)]
+product_request_form = Annotated[ProductRequest, Depends(product_form)]
+default_image_url: str = "https://dzmpeskjgukecrebnptg.supabase.co/storage/v1/object/public/file_storage/default_images/new-product-presentation.png"
 
 
-def get_product_info(description: Optional[str] = Form(default=""), price: float = Form(), stock: int = Form(),
-                     name: str = Form()):
-    return ProductRequest(product_id=None, description=description, price=price, stock=stock, name=name)
+def is_empty(value: str):
+    if isinstance(value, str):
+        return value == ""
+
+
+def get_old_file_name(url: str):
+    values: list[str] = url.split("/")
+    return values[-1]
 
 
 @router.post(path="", status_code=status.HTTP_204_NO_CONTENT)
 async def add_new_product(db: database, user: user_dependency,
-                          product_request: ProductRequest = Depends(get_product_info),
+                          product_request: product_request_form,
                           image: UploadFile = File()):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
@@ -69,9 +76,9 @@ async def get_products_by_category(db: database, user: user_dependency, category
     return db.query(ProductModel).filter(ProductModel.user_id == user_id).all()
 
 
-@router.put(path="/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_product(db: database, user: user_dependency, product_request: ProductRequest,
-                         image: UploadFile = File(),
+@router.put(path="/{product_id}", status_code=status.HTTP_200_OK)
+async def update_product(db: database, user: user_dependency, product_request: product_request_form,
+                         image: Optional[UploadFile] | str = File(default=None),
                          product_id: int = Path(gt=0)):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
@@ -84,7 +91,11 @@ async def update_product(db: database, user: user_dependency, product_request: P
     product_model.stock = product_request.stock
     product_model.price = product_request.price
     product_model.description = product_request.description
-    product_model.image_url = "https://uppkqkteqxmhxkbuvani.supabase.co/storage/v1/object/sign/file_storage/new-product-presentation.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJmaWxlX3N0b3JhZ2UvbmV3LXByb2R1Y3QtcHJlc2VudGF0aW9uLnBuZyIsImlhdCI6MTcyOTAxMzQ4OSwiZXhwIjoxNzYwNTQ5NDg5fQ.vu1TuZUWJgUg2MzGBwiM3bc2y2-aBmeS9y5ZkUjPH_4&t=2024-10-15T17%3A31%3A31.463Z"
+    product_model.image_url = product_model.image_url if is_empty(image) else await update_file(
+        username=user.get("username"),
+        old_file_name=get_old_file_name(
+            product_model.image_url),
+        new_file=image)
     db.add(product_model)
     db.commit()
 
@@ -100,3 +111,4 @@ async def delete_user(db: database, user: user_dependency, product_id: int = Pat
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
     db.delete(product_model)
     db.commit()
+    delete_file(username=user.get("username"), file_name=get_old_file_name(product_model.image_url))

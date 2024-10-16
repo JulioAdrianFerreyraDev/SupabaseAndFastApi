@@ -2,7 +2,7 @@ from .data_base import Base
 from .data_base import SQLALCHEMY_DATABASE_URL
 from .data_base import engine
 from .data_base import local_session
-from .supabase_storage import get_all_buckets, get_all_files, upload_file
+from .supabase_storage import get_all_buckets, get_all_files, upload_file, update_file, delete_file
 
 
 def get_database():
