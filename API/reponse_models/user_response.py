@@ -2,6 +2,8 @@ from datetime import datetime
 
 from pydantic import BaseModel, Field
 
+from .roles_response import RolesResponse
+
 
 class UserResponse(BaseModel):
     user_id: int
@@ -13,3 +15,4 @@ class UserResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
     is_active: bool
+    role: RolesResponse

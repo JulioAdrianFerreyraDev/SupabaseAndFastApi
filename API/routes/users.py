@@ -18,9 +18,9 @@ user_dependency = Annotated[dict, Depends(get_current_token)]
 
 
 ## READ
-@router.get("", status_code=status.HTTP_200_OK, description="Admin Only")
+@router.get("", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
 async def get_all_users(db: database):
-    return db.query(UserModel).filter(UserModel.is_active == True).all()
+    return db.query(UserModel).filter(UserModel.is_active == True).filter(UserModel.role_id == 2).all()
 
 
 @router.get("/current", status_code=status.HTTP_200_OK, response_model=UserResponse)

@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta, timezone
+from os import getenv
 from typing import Annotated
 
+from dotenv import load_dotenv
 from fastapi import HTTPException
 from fastapi.params import Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -9,8 +11,11 @@ from starlette import status
 
 from ..models import UserModel
 
-__SECRET_KEY = "a100cbe71ba07c4718179eff6cdcd6e84f3ca4c7959c771cd95012f411e1efe6"
+load_dotenv()
+
+__SECRET_KEY = getenv("JWT_SECRET_KEY")
 __ALGORITHM = "HS256"
+__ROLES = {1: "admin", 2: "user", 3: "guest"}
 
 
 def auth_user(username: str, password: str, db):
@@ -22,8 +27,12 @@ def auth_user(username: str, password: str, db):
     return user_model
 
 
-def create_jwt(username: str, user_id: int):
-    encode: dict = {"sub": username, "id": user_id}
+def get_role_name(role_id: int) -> str:
+    return __ROLES.get(role_id)
+
+
+def create_jwt(username: str, user_id: int, role: str):
+    encode: dict = {"sub": username, "id": user_id, "role": role}
     expiration: datetime = datetime.now(timezone.utc) + timedelta(minutes=30)
     encode.update({"exp": expiration})
     return jwt.encode(encode, __SECRET_KEY, __ALGORITHM)
@@ -38,8 +47,9 @@ async def get_current_token(token: Annotated[str, Depends(__auth_token_endpoint)
         username: str = payload.get("sub")
         user_id: int = int(payload.get("id"))
         expiration_time: datetime = payload.get("exp")
+        role: str = payload.get("role")
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
-        return {"username": username, "id": user_id, "expiration": expiration_time}
+        return {"username": username, "id": user_id, "expiration": expiration_time, "role": role}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")

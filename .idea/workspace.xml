@@ -4,14 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="">
+    <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="update and delete file from bucketes">
+      <change afterPath="$PROJECT_DIR$/API/models/role_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/API/reponse_models/roles_response.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/data/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/data/supabase_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/data/supabase_storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/models/product_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/models/product_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/requests_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/requests_models/products_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/products_request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/auth/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/auth/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/auth/auth_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/auth/auth_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/models/user_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/reponse_models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/user_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/reponse_models/user_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/user_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/user_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/versions/489095f0ce6f_add_a_description_for_the_revision.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/489095f0ce6f_add_a_description_for_the_revision.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,6 +191,19 @@
       <option name="presentableId" value="Default" />
       <updated>1728427574234</updated>
     </task>
+    <task id="LOCAL-00001" summary="update and delete file from bucketes">
+      <option name="closed" value="true" />
+      <created>1729118006301</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729118006301</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update and delete file from bucketes" />
+    <option name="LAST_COMMIT_MESSAGE" value="update and delete file from bucketes" />
   </component>
 </project>
