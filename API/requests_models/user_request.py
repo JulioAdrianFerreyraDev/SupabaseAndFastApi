@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 email_pattern: str = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
@@ -12,4 +12,11 @@ class UserRequest(BaseModel):
     first_name: str = Field(min_length=3)
     last_name: str = Field(min_length=3)
     password: str = Field(min_length=8, max_length=10, examples=["password"])
-    role: Optional[int] = Field(gt=0, default=2)
+    role: Optional[str] = Field(default="user")
+
+    @field_validator("role")
+    def user_role(cls, value: str):
+        roles = ["admin", "guest", "user"]
+        if value not in roles:
+            raise ValueError("Valid roles: 'admin','guest','user'")
+        return value

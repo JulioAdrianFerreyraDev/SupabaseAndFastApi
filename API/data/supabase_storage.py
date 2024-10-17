@@ -12,6 +12,8 @@ __storage_name: str = "file_storage"
 supabase_client: Client = create_client(supabase_url=__SUPABASE_URL,
                                         supabase_key=__SUPABASE_API_TOKEN)
 
+__DEFAULT_URL: str = "https://dzmpeskjgukecrebnptg.supabase.co/storage/v1/object/public/file_storage/default_images/new-product-presentation.png"
+
 
 def get_all_buckets():
     res = supabase_client.storage.list_buckets()
@@ -36,7 +38,7 @@ async def upload_file(file: UploadFile, username: str) -> str:
         public_url: str = supabase_client.storage.from_(__storage_name).get_public_url(bucket_in_path)
         return public_url.replace("?", "")
     except Exception:
-        return "https://dzmpeskjgukecrebnptg.supabase.co/storage/v1/object/public/file_storage/default_images/new-product-presentation.png"
+        return __DEFAULT_URL
 
 
 async def update_file(new_file: UploadFile, old_file_name: str, username: str) -> str:
@@ -55,7 +57,7 @@ async def update_file(new_file: UploadFile, old_file_name: str, username: str) -
         public_url: str = supabase_client.storage.from_(__storage_name).get_public_url(bucket_in_path)
         return public_url.replace("?", "")
     except Exception:
-        return ""
+        return __DEFAULT_URL
 
 
 def delete_file(file_name: str, username: str):
@@ -64,3 +66,5 @@ def delete_file(file_name: str, username: str):
         response = supabase_client.storage.from_(__storage_name).remove(bucket_in_path)
     except Exception:
         print("Exception")
+
+# TODO move files to another bucket

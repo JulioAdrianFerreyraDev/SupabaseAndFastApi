@@ -16,6 +16,7 @@ database = Annotated[Session, Depends(get_database)]
 user_dependency = Annotated[dict, Depends(get_current_token)]
 
 
+# CREATE
 @router.post("", status_code=status.HTTP_204_NO_CONTENT)
 async def add_new_sale(db: database, user: user_dependency, sale_request: SaleRequest):
     if user is None:
@@ -30,6 +31,7 @@ async def add_new_sale(db: database, user: user_dependency, sale_request: SaleRe
     db.commit()
 
 
+# READ
 @router.get("", status_code=status.HTTP_200_OK, response_model=list[SaleResponse])
 async def get_all_sales(db: database, user: user_dependency):
     if user is None:
@@ -50,6 +52,7 @@ async def get_sale(db: database, user: user_dependency, sale_id: int = Path(gt=0
     return sale_model
 
 
+# UPDATE
 @router.put("/{sale_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def update_sale(db: database, user: user_dependency, sale_request: SaleRequest, sale_id: int = Path(gt=0)):
     if user is None:
@@ -64,6 +67,7 @@ async def update_sale(db: database, user: user_dependency, sale_request: SaleReq
     db.commit()
 
 
+# DELETE
 @router.delete("/{sale_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_sale(db: database, user: user_dependency, sale_id: int = Path(gt=0)):
     if user is None:

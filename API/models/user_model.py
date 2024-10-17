@@ -47,7 +47,7 @@ class UserModel(Base):
 
     @role_name.setter
     def role_name(self, role: str):
-        self.role_id = roles.get(role)
+        self.role_id = roles.get(role, 2)
 
     def validate_password(self, plain_password: str) -> bool:
         return bcrypt_context.verify(plain_password, self.password_hash)

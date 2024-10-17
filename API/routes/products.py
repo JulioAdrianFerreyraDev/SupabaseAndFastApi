@@ -68,6 +68,10 @@ async def get_product(db: database, user: user_dependency, product_id: int = Pat
 
 
 # TODO: ADD CATEGORY
+# TODO GET BY CATEGORY
+# TODO FILTER BY NAME
+# TODO UPDATE VALIDATION
+
 @router.get(path="/", status_code=status.HTTP_200_OK)
 async def get_products_by_category(db: database, user: user_dependency, category: Optional[str] = Query(default=None)):
     if user is None:

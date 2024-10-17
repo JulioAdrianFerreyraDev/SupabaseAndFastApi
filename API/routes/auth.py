@@ -24,7 +24,8 @@ async def register(db: database, user_request: UserRequest):
         password=user_request.password,
         email=user_request.email,
         last_name=user_request.last_name,
-        first_name=user_request.first_name
+        first_name=user_request.first_name,
+        role=user_request.role
     )
     db.add(user_model)
     db.commit()

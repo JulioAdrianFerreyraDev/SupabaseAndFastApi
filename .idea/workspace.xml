@@ -5,19 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="update and delete file from bucketes">
-      <change afterPath="$PROJECT_DIR$/API/models/role_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/API/reponse_models/roles_response.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/auth/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/auth/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/auth/auth_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/auth/auth_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/data/supabase_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/data/supabase_storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/sale_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/models/sale_model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/models/user_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/reponse_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/reponse_models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/reponse_models/user_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/reponse_models/user_response.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/requests_models/user_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/user_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/sales.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/sales.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/sales_products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/sales_products.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic/versions/489095f0ce6f_add_a_description_for_the_revision.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/versions/489095f0ce6f_add_a_description_for_the_revision.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

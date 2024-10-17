@@ -19,7 +19,9 @@ user_dependency = Annotated[dict, Depends(get_current_token)]
 
 ## READ
 @router.get("", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
-async def get_all_users(db: database):
+async def get_all_users(db: database, user: user_dependency):
+    if user is None or user.get("role") == "guest":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     return db.query(UserModel).filter(UserModel.is_active == True).filter(UserModel.role_id == 2).all()
 
 
@@ -45,30 +47,39 @@ async def get_user_by_id(db: database, user: user_dependency, user_id: int = Pat
     return user_model
 
 
+# TODO filter by name
+
 ## UPDATE
 @router.put("", status_code=status.HTTP_204_NO_CONTENT)
 async def update_user(db: database, user: user_dependency, user_request: UserRequest):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_id: int = user.get("id")
-    user_model: UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).first()
+    user_model: UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).filter(
+        UserModel.is_active == True).first()
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     user_model.updated_at = datetime.now(timezone.utc)
-    user_model.first_name = user_request.first_name,
-    user_model.last_name = user_request.last_name,
-    user_model.email = user_request.email,
-    user_model.username = user_request.username
+    user_model.first_name = user_request.first_name
+    user_model.last_name = user_request.last_name
+    user_model.email = user_request.email
     db.add(user_model)
     db.commit()
 
 
 @router.put("/password", status_code=status.HTTP_204_NO_CONTENT)
 async def update_user_password(db: database, user: user_dependency, password_request: PasswordRequest):
+    """
+    :param db:
+    :param user:
+    :param password_request:
+    :return:
+    """
+
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_id: int = user.get("id")
-    user_model: UserModel | None = db.query(UserModel).filter(UserModel.user_id == user_id).first()
+    user_model: UserModel | None = db.query(UserModel).get(user_id)
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     if not user_model.validate_password(password_request.password):
@@ -79,12 +90,22 @@ async def update_user_password(db: database, user: user_dependency, password_req
     db.commit()
 
 
+# TODO add update email
+
+# TODO add update username
+
 @router.put("/suspend", status_code=status.HTTP_204_NO_CONTENT)
 async def suspend_user(db: database, user: user_dependency):
+    """
+
+    :param db:
+    :param user:
+    :return:
+    """
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_id: int = user.get("id")
-    user_model: UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).first()
+    user_model: UserModel = db.query(UserModel).get(user_id)
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     user_model.is_active = False
