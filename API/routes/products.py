@@ -47,11 +47,13 @@ async def add_new_product(db: database, user: user_dependency,
 
 
 @router.get(path="", status_code=status.HTTP_200_OK, response_model=list[ProductResponse])
-async def get_all_products(db: database, user: user_dependency):
+async def get_all_products(db: database, user: user_dependency, category: Optional[str] = Query(default=""),
+                           name: Optional[str] = Query(default="")):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_id: int = user.get("id")
-    products: list[ProductModel] = db.query(ProductModel).filter(ProductModel.user_id == user_id).all()
+    products: list[ProductModel] = db.query(ProductModel).filter(ProductModel.user_id == user_id).filter(
+        ProductModel.name.like(f"%{name}%")).all()
     return products
 
 
@@ -69,16 +71,6 @@ async def get_product(db: database, user: user_dependency, product_id: int = Pat
 
 # TODO: ADD CATEGORY
 # TODO GET BY CATEGORY
-# TODO FILTER BY NAME
-# TODO UPDATE VALIDATION
-
-@router.get(path="/", status_code=status.HTTP_200_OK)
-async def get_products_by_category(db: database, user: user_dependency, category: Optional[str] = Query(default=None)):
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
-    user_id: int = user.get("id")
-    return db.query(ProductModel).filter(ProductModel.user_id == user_id).all()
-
 
 @router.put(path="/{product_id}", status_code=status.HTTP_200_OK)
 async def update_product(db: database, user: user_dependency, product_request: product_request_form,

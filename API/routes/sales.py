@@ -17,7 +17,7 @@ user_dependency = Annotated[dict, Depends(get_current_token)]
 
 
 # CREATE
-@router.post("", status_code=status.HTTP_204_NO_CONTENT)
+@router.post("", status_code=status.HTTP_200_OK)
 async def add_new_sale(db: database, user: user_dependency, sale_request: SaleRequest):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
@@ -29,6 +29,7 @@ async def add_new_sale(db: database, user: user_dependency, sale_request: SaleRe
     )
     db.add(sale_model)
     db.commit()
+    return sale_model.sale_id
 
 
 # READ

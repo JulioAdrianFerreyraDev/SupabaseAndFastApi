@@ -63,8 +63,30 @@ async def get_sold_products_by_sale(db: database, user: user_dependency, sale_id
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sale not found")
     return sale_model.sale_to_json()
 
-# TODO add sale-products
 
-# TODO update sale-products
+# TODO change product stock
 
-# TODO delete sale -products
+@router.put("", status_code=status.HTTP_204_NO_CONTENT)
+async def update_sale_product(db: database, user: user_dependency, sale: SoldProductsRequest,
+                              ):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    sp: SaleProductModel = db.query(SaleProductModel).filter(SaleProductModel.sale_id == sale.sale_id).filter(
+        SaleProductModel.product_id == sale.product_id).first()
+    if sp is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sale not found")
+    sp.quantity = sale.quantity
+    db.add(sp)
+    db.commit()
+
+
+@router.delete("/{sale_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_sale_product(db: database, user: user_dependency, sale_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    sp: list = db.query(SaleProductModel).filter(SaleProductModel.sale_id == sale_id).all()
+    if len(sp) != 0 and sp[0].sales.user.user_id != user.get("id"):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sale not Found")
+    for sale in sp:
+        db.delete(sale)
+    db.commit()

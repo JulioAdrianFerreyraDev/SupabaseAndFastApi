@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Path
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from starlette import status
 
@@ -9,7 +10,7 @@ from ..auth import get_current_token
 from ..data import get_database
 from ..models import UserModel
 from ..reponse_models import UserResponse
-from ..requests_models import UserRequest, PasswordRequest
+from ..requests_models import UserRequest, PasswordRequest, email_pattern
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -42,12 +43,20 @@ async def get_user_by_id(db: database, user: user_dependency, user_id: int = Pat
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_model: UserModel = db.query(UserModel).filter(UserModel.user_id == user_id).filter(
         UserModel.is_active == True).first()
+
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return user_model
 
 
-# TODO filter by name
+@router.get(path="/", status_code=status.HTTP_200_OK, response_model=list[UserResponse])
+async def filter_user_by_name(db: database, user: user_dependency, name: str):
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    users: list = db.query(UserModel).filter(
+        or_(UserModel.first_name.like(f"%{name}%"), UserModel.last_name.like(f"%{name}%"))).all()
+    return users
+
 
 ## UPDATE
 @router.put("", status_code=status.HTTP_204_NO_CONTENT)
@@ -62,7 +71,6 @@ async def update_user(db: database, user: user_dependency, user_request: UserReq
     user_model.updated_at = datetime.now(timezone.utc)
     user_model.first_name = user_request.first_name
     user_model.last_name = user_request.last_name
-    user_model.email = user_request.email
     db.add(user_model)
     db.commit()
 
@@ -90,7 +98,18 @@ async def update_user_password(db: database, user: user_dependency, password_req
     db.commit()
 
 
-# TODO add update email
+@router.put("/email/{email}", status_code=status.HTTP_204_NO_CONTENT)
+async def update_email(db: database, user: user_dependency, email: str = Path(min_length=3, pattern=email_pattern)):
+    if user is None or user.get("role") == "guest":
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+    user_id: int = user.get("id")
+    user_model: UserModel | None = db.query(UserModel).get(user_id)
+    if user_model is None or not user_model.is_active:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    user_model.email = email
+    db.add(user_model)
+    db.commit()
+
 
 # TODO add update username
 

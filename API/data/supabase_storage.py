@@ -63,8 +63,27 @@ async def update_file(new_file: UploadFile, old_file_name: str, username: str) -
 def delete_file(file_name: str, username: str):
     try:
         bucket_in_path = f"{username}/products/resources/{file_name}"
-        response = supabase_client.storage.from_(__storage_name).remove(bucket_in_path)
+        supabase_client.storage.from_(__storage_name).remove(bucket_in_path)
     except Exception:
         print("Exception")
 
-# TODO move files to another bucket
+
+def __delete_old_directory(old_username: str):
+    try:
+        supabase_client.storage.from_(__storage_name).remove(f"{old_username}/")
+    except Exception as e:
+        print(e)
+
+
+def move_files(old_username: str, new_username: str):
+    try:
+        old_path: str = f"{old_username}/products/resources"
+        new_path: str = f"{new_username}/products/resources"
+        res: list[dict] = supabase_client.storage.from_(__storage_name).list(old_path)
+        for file_dict in res:
+            file = file_dict.get("name")
+            supabase_client.storage.from_(__storage_name).move(from_path=f"{old_path}/{file}",
+                                                               to_path=f"{new_path}/{file}")
+        __delete_old_directory(old_username)
+    except Exception as e:
+        print(e)
