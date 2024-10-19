@@ -39,7 +39,7 @@ async def add_new_product(db: database, user: user_dependency,
         price=product_request.price,
         stock=product_request.stock,
         user_id=user_id,
-        image_url=await upload_file(username=user.get("username"), file=image)
+        image_url=await upload_file(file=image)
 
     )
     db.add(product_model)
@@ -88,7 +88,6 @@ async def update_product(db: database, user: user_dependency, product_request: p
     product_model.price = product_request.price
     product_model.description = product_request.description
     product_model.image_url = product_model.image_url if is_empty(image) else await update_file(
-        username=user.get("username"),
         old_file_name=get_old_file_name(
             product_model.image_url),
         new_file=image)
@@ -107,4 +106,4 @@ async def delete_user(db: database, user: user_dependency, product_id: int = Pat
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
     db.delete(product_model)
     db.commit()
-    delete_file(username=user.get("username"), file_name=get_old_file_name(product_model.image_url))
+    delete_file(file_name=get_old_file_name(product_model.image_url))

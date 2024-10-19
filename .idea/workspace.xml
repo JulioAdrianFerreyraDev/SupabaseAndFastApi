@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="update and delete file from bucketes">
+      <change afterPath="$PROJECT_DIR$/API/requests_models/email_request.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/data/supabase_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/data/supabase_storage.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/requests_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/sales.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/sales.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/routes/sales_products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/sales_products.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/users.py" afterDir="false" />
     </list>

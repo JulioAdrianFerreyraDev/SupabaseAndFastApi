@@ -10,7 +10,7 @@ from ..auth import get_current_token
 from ..data import get_database
 from ..models import UserModel
 from ..reponse_models import UserResponse
-from ..requests_models import UserRequest, PasswordRequest, email_pattern
+from ..requests_models import UserRequest, PasswordRequest, EmailRequest
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -98,20 +98,18 @@ async def update_user_password(db: database, user: user_dependency, password_req
     db.commit()
 
 
-@router.put("/email/{email}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_email(db: database, user: user_dependency, email: str = Path(min_length=3, pattern=email_pattern)):
+@router.put("/email", status_code=status.HTTP_204_NO_CONTENT)
+async def update_email(db: database, user: user_dependency, email: EmailRequest):
     if user is None or user.get("role") == "guest":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     user_id: int = user.get("id")
     user_model: UserModel | None = db.query(UserModel).get(user_id)
     if user_model is None or not user_model.is_active:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    user_model.email = email
+    user_model.email = email.email
     db.add(user_model)
     db.commit()
 
-
-# TODO add update username
 
 @router.put("/suspend", status_code=status.HTTP_204_NO_CONTENT)
 async def suspend_user(db: database, user: user_dependency):

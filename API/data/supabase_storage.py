@@ -25,10 +25,10 @@ def get_all_files(bucket: str):
     return res
 
 
-async def upload_file(file: UploadFile, username: str) -> str:
+async def upload_file(file: UploadFile) -> str:
     try:
         file_content = await file.read()
-        bucket_in_path = f"{username}/products/resources/{file.filename}"
+        bucket_in_path = f"products/resources/{file.filename}"
         # Open the file and upload it to supabase storage
 
         supabase_client.storage.from_(__storage_name).upload(file=file_content,
@@ -41,17 +41,16 @@ async def upload_file(file: UploadFile, username: str) -> str:
         return __DEFAULT_URL
 
 
-async def update_file(new_file: UploadFile, old_file_name: str, username: str) -> str:
+async def update_file(new_file: UploadFile, old_file_name: str) -> str:
     """
     :param new_file: The new file to upload
     :param old_file_name: The old file name inside the bucket
-    :param username: Will be used to indicate the root directory inside the bucket
     :return:
     """
 
     try:
         file_content = await new_file.read()
-        bucket_in_path = f"{username}/products/resources/{old_file_name}"
+        bucket_in_path = f"products/resources/{old_file_name}"
         supabase_client.storage.from_(__storage_name).update(file=file_content, path=bucket_in_path,
                                                              file_options={"content-type": "image/*"})
         public_url: str = supabase_client.storage.from_(__storage_name).get_public_url(bucket_in_path)
@@ -60,30 +59,9 @@ async def update_file(new_file: UploadFile, old_file_name: str, username: str) -
         return __DEFAULT_URL
 
 
-def delete_file(file_name: str, username: str):
+def delete_file(file_name: str):
     try:
-        bucket_in_path = f"{username}/products/resources/{file_name}"
+        bucket_in_path = f"products/resources/{file_name}"
         supabase_client.storage.from_(__storage_name).remove(bucket_in_path)
     except Exception:
         print("Exception")
-
-
-def __delete_old_directory(old_username: str):
-    try:
-        supabase_client.storage.from_(__storage_name).remove(f"{old_username}/")
-    except Exception as e:
-        print(e)
-
-
-def move_files(old_username: str, new_username: str):
-    try:
-        old_path: str = f"{old_username}/products/resources"
-        new_path: str = f"{new_username}/products/resources"
-        res: list[dict] = supabase_client.storage.from_(__storage_name).list(old_path)
-        for file_dict in res:
-            file = file_dict.get("name")
-            supabase_client.storage.from_(__storage_name).move(from_path=f"{old_path}/{file}",
-                                                               to_path=f"{new_path}/{file}")
-        __delete_old_directory(old_username)
-    except Exception as e:
-        print(e)

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from ..auth import get_current_token
 from ..data import get_database
-from ..models import SaleProductModel, SaleModel, UserModel
+from ..models import SaleProductModel, SaleModel, UserModel, ProductModel
 from ..reponse_models import SoldProductsResponse
 from ..requests_models.sold_products_request import SoldProductsRequest
 
@@ -22,7 +22,14 @@ async def add_sold_products(db: database, user: user_dependency, sold_products: 
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     for sale in sold_products:
-        db.add(SaleProductModel(**sale.model_dump()))
+        sale_model: SaleProductModel = SaleProductModel(**sale.model_dump())
+        product_model: ProductModel = db.query(ProductModel).get(sale_model.product_id)
+        if product_model.stock < sale_model.quantity:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Not enough items")
+        product_model.stock -= sale_model.quantity
+        sale_model.id = None
+        db.add(sale_model)
+        db.add(product_model)
         db.commit()
 
 
@@ -64,8 +71,6 @@ async def get_sold_products_by_sale(db: database, user: user_dependency, sale_id
     return sale_model.sale_to_json()
 
 
-# TODO change product stock
-
 @router.put("", status_code=status.HTTP_204_NO_CONTENT)
 async def update_sale_product(db: database, user: user_dependency, sale: SoldProductsRequest,
                               ):
@@ -75,8 +80,11 @@ async def update_sale_product(db: database, user: user_dependency, sale: SoldPro
         SaleProductModel.product_id == sale.product_id).first()
     if sp is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Sale not found")
+    product_model: ProductModel = db.query(ProductModel).get(sp.product_id)
+    product_model.stock += sp.quantity - sale.quantity
     sp.quantity = sale.quantity
     db.add(sp)
+    db.add(product_model)
     db.commit()
 
 

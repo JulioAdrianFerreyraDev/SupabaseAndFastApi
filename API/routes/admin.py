@@ -89,4 +89,16 @@ async def delete_user(db: database, user: user_dependency, user_id: int = Path(g
     db.delete(user_model)
     db.commit()
 
+
 # TODO add sold-products end-points
+
+def get_all_sale_products():
+    pass
+
+
+def get_sale_product(sale_id: int):
+    pass
+
+
+def get_sale_product_by_user(user_id: int):
+    pass
