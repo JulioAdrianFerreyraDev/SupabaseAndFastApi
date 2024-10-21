@@ -1,1 +1,0 @@
-from .data import SQLALCHEMY_DATABASE_URL,Base

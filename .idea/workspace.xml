@@ -5,14 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8f6d85d-1626-449f-850b-6925329fd80c" name="Changes" comment="update and delete file from bucketes">
-      <change afterPath="$PROJECT_DIR$/API/requests_models/email_request.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/health_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/user_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/data/supabase_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/data/supabase_storage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/requests_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/requests_models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/sales_products.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/sales_products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/API/routes/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/auth/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/auth/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/auth/auth_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/auth/auth_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/data/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/data/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/data/data_base.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/data/data_base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/data/supabase_storage.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/data/supabase_storage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/product_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/product_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/role_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/role_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/sale_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/sale_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/sale_product_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/sale_product_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/models/user_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/jwt_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/jwt_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/product_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/product_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/roles_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/roles_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/sale_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/sale_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/sold_products_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/sold_products_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/reponse_models/user_response.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/reponse_models/user_response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/email_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/email_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/password_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/password_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/products_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/products_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/sale_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/sale_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/sold_products_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/sold_products_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/requests_models/user_request.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests_models/user_request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/sales.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/sales.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/sales_products.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/sales_products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/API/routes/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/alembic/env.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +107,7 @@
     &quot;Python.__init__.executor&quot;: &quot;Run&quot;,
     &quot;Python.holi.executor&quot;: &quot;Run&quot;,
     &quot;Python.index.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
     &quot;Python.supabase_storage.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
@@ -95,7 +129,7 @@
       <recent name="C:\Users\jaft2\PycharmProjects\RedNegociosAPI" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.supabase_storage">
+  <component name="RunManager" selected="Python.main">
     <configuration name="holi" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RedNegociosAPI" />
       <option name="ENV_FILES" value="" />
@@ -140,6 +174,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="RedNegociosAPI" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/API" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/API/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="supabase_storage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="RedNegociosAPI" />
       <option name="ENV_FILES" value="" />
@@ -164,6 +220,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.supabase_storage" />
         <item itemvalue="Python.index" />
         <item itemvalue="Python.holi" />
@@ -196,6 +253,17 @@
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update and delete file from bucketes" />
