@@ -26,7 +26,7 @@ async def get_all_users(db: database, user: user_dependency):
     return db.query(UserModel).filter(UserModel.is_active == True).filter(UserModel.role_id == 2).all()
 
 
-@router.get("/current", status_code=status.HTTP_200_OK)
+@router.get("/current", status_code=status.HTTP_200_OK, response_model=UserResponse)
 async def get_current_user(db: database, user: user_dependency):
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")

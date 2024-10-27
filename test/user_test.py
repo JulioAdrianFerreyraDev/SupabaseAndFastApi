@@ -11,7 +11,7 @@ app.dependency_overrides[get_database] = override_get_database
 app.dependency_overrides[get_current_token] = override_user_dependency
 
 
-def test_get_all_users_empty():
+def test_get_all_users_empty(test_user):
     response = client.get("/users")
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == []
